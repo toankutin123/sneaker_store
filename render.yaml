@@ -4,8 +4,8 @@ services:
     runtime: node
     plan: free
     region: oregon
-    buildCommand: npm install --include=dev && npm run build
-    startCommand: npm start
+    buildCommand: npm install --include=dev && npm run build && cd server && npm install --include=dev
+    startCommand: cd server && npm start
     autoDeploy: true
     envVars:
       - key: NODE_ENV
