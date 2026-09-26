@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: sneaker-store-backend
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NPM_CONFIG_PRODUCTION
+        value: "false"
+      - key: PORT
+        value: "10000"
+      - key: VITE_API_URL
+        value: https://sneaker-store-backend.onrender.com
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true

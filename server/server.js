@@ -3,7 +3,15 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 
-dotenv.config({ path: path.join(path.dirname(fileURLToPath(import.meta.url)), '.env') });
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const envCandidates = [
+  path.resolve(__dirname, '.env.production'),
+  path.resolve(__dirname, '.env')
+];
+const envPath = envCandidates.find((candidate) => fs.existsSync(candidate)) || envCandidates[0];
+
+dotenv.config({ path: envPath });
 
 import express from 'express';
 import cors from 'cors';
@@ -17,9 +25,6 @@ import loyaltyRoutes from './routes/loyaltyRoutes.js';
 import couponRoutes from './routes/couponRoutes.js';
 import eventRoutes from './routes/eventRoutes.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 const app = express();
 
 // Create uploads directory if not exists
@@ -27,6 +32,9 @@ const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
+
+const rootDir = path.resolve(__dirname, '..');
+const distDir = path.join(rootDir, 'dist');
 
 app.use(cors());
 app.use(express.json());
@@ -64,6 +72,15 @@ app.use('/api/coupons', couponRoutes);
 // Event routes
 app.use('/api/events', eventRoutes);
 
+// Serve frontend build in production
+if (fs.existsSync(distDir)) {
+  app.use(express.static(distDir));
+
+  app.get(/^\/(?!api\/|uploads\/).*/, (req, res) => {
+    res.sendFile(path.join(distDir, 'index.html'));
+  });
+}
+
 // Error Handling Middleware
 app.use((err, req, res, next) => {
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
@@ -79,11 +96,11 @@ const startServer = async () => {
   try {
     await sequelize.authenticate();
     console.log('PostgreSQL Connected');
-    
+
     // Only sync if tables don't exist (don't use force: true in production!)
     await sequelize.sync();
     console.log('Database synchronized');
-    
+
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   } catch (error) {
     console.log('Database Connection Error:', error);

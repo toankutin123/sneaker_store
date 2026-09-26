@@ -1,16 +1,97 @@
-# React + Vite
+# Sneaker Store
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sneaker Store là một ứng dụng thương mại điện tử bán giày sneaker, được xây dựng bằng React cho frontend và Node.js/Express cho backend. Dự án hỗ trợ người dùng xem sản phẩm, thêm vào giỏ hàng, thanh toán, quản lý tài khoản, tích hợp ưu đãi, loyalty, chatbot và quản trị hệ thống admin.
 
-Currently, two official plugins are available:
+## Công nghệ sử dụng
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Frontend: React 19, Vite, React Router
+- Styling: CSS modules/custom CSS
+- Backend: Node.js, Express
+- Database: PostgreSQL + Sequelize ORM
+- Authentication: JWT + bcryptjs
+- File upload: multer
+- Dev tools: ESLint, Docker Compose
 
-## React Compiler
+## Tính năng chính
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Trang chủ và danh sách sản phẩm
+- Chi tiết sản phẩm, size guide
+- Giỏ hàng và thanh toán
+- Đăng ký / đăng nhập / hồ sơ người dùng
+- Wishlist, đánh giá sản phẩm
+- Hệ thống loyalty và coupon
+- Quản trị admin: người dùng, sản phẩm, đơn hàng, sự kiện, mã giảm giá
+- Chatbot hỗ trợ khách hàng
 
-## Expanding the ESLint configuration
+## Cấu trúc thư mục
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- src/: source code frontend
+- public/: tài nguyên static
+- server/: backend API, model, route, config
+- docker-compose.yml: khởi động PostgreSQL và pgAdmin
+
+## Yêu cầu môi trường
+
+- Node.js 18+
+- npm
+- Docker Desktop hoặc Docker Engine
+
+## Thiết lập nhanh
+
+1. Cài đặt dependencies:
+
+```bash
+npm install
+```
+
+2. Khởi động database PostgreSQL bằng Docker:
+
+```bash
+docker compose up -d
+```
+
+3. Khởi động frontend:
+
+```bash
+npm run dev
+```
+
+4. Khởi động backend:
+
+```bash
+npm run start
+```
+
+5. Truy cập ứng dụng:
+
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:5000
+- pgAdmin: http://localhost:5050
+
+## Biến môi trường
+
+File `server/.env` chứa các biến môi trường như:
+
+- PORT
+- DB_HOST
+- DB_PORT
+- DB_NAME
+- DB_USER
+- DB_PASSWORD
+- JWT_SECRET
+
+> Lưu ý: không commit file `.env` lên repository công khai. Nếu cần chia sẻ, hãy dùng template hoặc biến môi trường từ hosting.
+
+## Scripts có sẵn
+
+```bash
+npm run dev
+npm run build
+npm run preview
+npm run start
+npm run seed
+```
+
+## Ghi chú
+
+Dự án hiện đang mặc định kết nối tới PostgreSQL ở địa chỉ `localhost:5433` với thông tin đăng nhập đã được định nghĩa trong file cấu hình database và `.env` của server. Đảm bảo container PostgreSQL đã được khởi động trước khi chạy backend.
