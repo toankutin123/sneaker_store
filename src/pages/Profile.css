@@ -1,0 +1,10 @@
+.profile-section {
+  background-color: var(--color-bg-alt);
+  padding: 32px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.profile-section form .input-field {
+  background-color: var(--color-bg-light);
+}
